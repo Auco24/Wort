@@ -13,6 +13,7 @@ export function defaultSettings(): Settings {
     uiLang: ui,
     nativeLang: ui,
     theme: 'system',
+    design: 'modern',
     fontScale: 1,
     newPerDay: 15,
     maxReviewsPerDay: 300,

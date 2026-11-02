@@ -2,7 +2,7 @@
 
 Wort is a desktop app for Windows for learning vocabulary in foreign languages. It focuses on **English, German, Swedish and Japanese**, and also supports French, Spanish, Italian, Dutch, Norwegian, Finnish, Portuguese, Korean, Chinese and Russian.
 
-Interface languages: Russian, English, German.
+Interface languages: Russian, English, German — switch any time with the RU / EN / DE buttons at the bottom of the sidebar or in Settings.
 
 ## Features
 
@@ -38,7 +38,7 @@ Interface languages: Russian, English, German.
   - duplicate warnings
   - bulk import from a pasted list or a CSV file, with column mapping
 - **Statistics:** daily goal, study streak, activity calendar, 2-week review forecast, success rate.
-- **Word library: about 830 words in 24 topics** (phrases, family, food, travel, work, nature, verbs, adjectives, society and more), levels A1–B2. Each entry exists in English, German (article and plural or verb forms), Swedish (en/ett and forms) and Japanese (with kana reading), translated into Russian, English or German. In the library you can:
+- **Word library: about 940 words in 28 topics** (phrases, family, daily routine, food, travel, work, business, nature, verbs, adjectives, society, advanced B2–C1 vocabulary and more), levels A1–C1, plus **the first 100 kanji (N5)** for Japanese with on/kun readings and example words. Each entry exists in English, German (article and plural or verb forms), Swedish (en/ett and forms) and Japanese (with kana reading), translated into Russian, English or German. In the library you can:
   - filter by language, level and topic, or search;
   - browse a topic as a list or as flip cards (click/Space flips, ← → browse);
   - save a word with the star (S) — it goes into your deck and gets scheduled; "Save all" takes a whole topic;
@@ -46,7 +46,7 @@ Interface languages: Russian, English, German.
 - **Topics when studying:** a session can be limited to chosen topics and levels.
 - **Starter decks** of 40–55 words each for English, German, Swedish and Japanese, with translations, grammar forms and examples.
 - **Data safety.** Everything is stored locally in `%APPDATA%\Wort\wort-data.json`. Wort makes a backup every day and keeps the last 14. You can also export a backup or a CSV file yourself.
-- Light and dark themes, adjustable text size.
+- **Appearance:** two styles — *Modern* (glass surfaces, gradients, soft shapes) and *Classic* (calm and plain) — and eight colour themes: system, light, dark, sepia, ocean, sakura, forest and midnight. Text size is adjustable. A sun/moon button in the sidebar switches between light and dark instantly.
 
 ## Installation (Windows)
 

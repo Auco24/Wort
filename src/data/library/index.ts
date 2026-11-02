@@ -6,6 +6,7 @@ import { WORDS_1 } from './words1';
 import { WORDS_2 } from './words2';
 import { WORDS_3 } from './words3';
 import { WORDS_4 } from './words4';
+import { WORDS_5 } from './words5';
 
 /** Languages the library provides words for. */
 export const LIB_LANGS: LangCode[] = ['en', 'de', 'sv', 'ja'];
@@ -55,7 +56,7 @@ let cache: LibEntry[] | null = null;
 
 export function libraryEntries(): LibEntry[] {
   if (!cache) {
-    cache = Object.entries({ ...WORDS_1, ...WORDS_2, ...WORDS_3, ...WORDS_4 }).flatMap(([cat, text]) => parseLines(cat, text));
+    cache = Object.entries({ ...WORDS_1, ...WORDS_2, ...WORDS_3, ...WORDS_4, ...WORDS_5 }).flatMap(([cat, text]) => parseLines(cat, text));
   }
   return cache;
 }

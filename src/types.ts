@@ -79,12 +79,15 @@ export interface ReviewLog {
 }
 
 export type StudyMode = 'flip' | 'type' | 'choice' | 'listen' | 'mixed';
-export type Theme = 'system' | 'light' | 'dark';
+export type Theme = 'system' | 'light' | 'dark' | 'sepia' | 'midnight' | 'forest' | 'ocean' | 'sakura';
+/** Overall look: calm and flat, or modern with glass surfaces and gradients. */
+export type Design = 'classic' | 'modern';
 
 export interface Settings {
   uiLang: UiLang;
   nativeLang: UiLang;
   theme: Theme;
+  design: Design;
   fontScale: number;
   newPerDay: number;
   maxReviewsPerDay: number;

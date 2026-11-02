@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { BookOpen, Check } from 'lucide-react';
-import type { LangCode, UiLang } from '../types';
+import type { Design, LangCode, Theme, UiLang } from '../types';
 import { useStore } from '../store';
 import { translate } from '../i18n';
 import { STARTER_DECKS, starterDrafts } from '../data/starter';
 import { UI_LANG_NAMES, lang } from '../lib/languages';
 import { Flag } from '../components/Flag';
+import { DesignPicker, ThemePicker } from '../components/Appearance';
 
 export function Onboarding() {
   const settings = useStore((s) => s.data.settings);
@@ -14,6 +15,8 @@ export function Onboarding() {
   const [native, setNative] = useState<UiLang>(settings.nativeLang);
   const [picked, setPicked] = useState<Set<LangCode>>(new Set(['en', 'de', 'sv', 'ja']));
   const t = (k: string, v?: Record<string, string | number>) => translate(ui, k, v);
+  const theme: Theme = settings.theme;
+  const design: Design = settings.design;
 
   const toggle = (c: LangCode) =>
     setPicked((cur) => {
@@ -41,17 +44,17 @@ export function Onboarding() {
         </div>
         <p className="lead">{t('onb.lead')}</p>
 
+        <div className="field">
+          <span>{t('settings.uiLang')}</span>
+          <div className="seg seg-wide">
+            {(Object.keys(UI_LANG_NAMES) as UiLang[]).map((l) => (
+              <button key={l} type="button" className={ui === l ? 'on' : ''} onClick={() => setUi(l)}>
+                {UI_LANG_NAMES[l]}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="form-grid">
-          <label className="field">
-            <span>{t('settings.uiLang')}</span>
-            <select className="input" value={ui} onChange={(e) => setUi(e.target.value as UiLang)}>
-              {(Object.keys(UI_LANG_NAMES) as UiLang[]).map((l) => (
-                <option key={l} value={l}>
-                  {UI_LANG_NAMES[l]}
-                </option>
-              ))}
-            </select>
-          </label>
           <label className="field">
             <span>{t('settings.nativeLang')}</span>
             <select className="input" value={native} onChange={(e) => setNative(e.target.value as UiLang)}>
@@ -62,6 +65,12 @@ export function Onboarding() {
               ))}
             </select>
           </label>
+        </div>
+
+        <h3>{t('settings.appearance')}</h3>
+        <DesignPicker value={design} onChange={(d) => setSettings({ design: d })} t={t} />
+        <div className="onb-themes">
+          <ThemePicker value={theme} onChange={(th) => setSettings({ theme: th })} t={t} />
         </div>
 
         <h3>{t('onb.pick')}</h3>

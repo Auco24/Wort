@@ -15,6 +15,7 @@ export const CATEGORIES: CategoryMeta[] = [
   { id: 'food', icon: 'Apple', name: { ru: 'Еда', en: 'Food', de: 'Essen' } },
   { id: 'drinks', icon: 'Coffee', name: { ru: 'Напитки и ресторан', en: 'Drinks & eating out', de: 'Getränke & Restaurant' } },
   { id: 'home', icon: 'House', name: { ru: 'Дом и быт', en: 'Home', de: 'Wohnen' } },
+  { id: 'routine', icon: 'Sunrise', name: { ru: 'Распорядок дня', en: 'Daily routine', de: 'Tagesablauf' } },
   { id: 'clothes', icon: 'Shirt', name: { ru: 'Одежда', en: 'Clothes', de: 'Kleidung' } },
   { id: 'city', icon: 'Building2', name: { ru: 'Город и транспорт', en: 'City & transport', de: 'Stadt & Verkehr' } },
   { id: 'travel', icon: 'Plane', name: { ru: 'Путешествия', en: 'Travel', de: 'Reisen' } },
@@ -24,6 +25,7 @@ export const CATEGORIES: CategoryMeta[] = [
   { id: 'numbers', icon: 'Hash', name: { ru: 'Числа', en: 'Numbers', de: 'Zahlen' } },
   { id: 'colors', icon: 'Palette', name: { ru: 'Цвета и формы', en: 'Colours & shapes', de: 'Farben & Formen' } },
   { id: 'work', icon: 'Briefcase', name: { ru: 'Работа и профессии', en: 'Work & jobs', de: 'Arbeit & Berufe' } },
+  { id: 'business', icon: 'Handshake', name: { ru: 'Деловой язык', en: 'Business', de: 'Geschäftssprache' } },
   { id: 'school', icon: 'GraduationCap', name: { ru: 'Учёба', en: 'Studying', de: 'Lernen & Schule' } },
   { id: 'shopping', icon: 'ShoppingCart', name: { ru: 'Покупки и деньги', en: 'Shopping & money', de: 'Einkaufen & Geld' } },
   { id: 'emotions', icon: 'Smile', name: { ru: 'Чувства и характер', en: 'Feelings & character', de: 'Gefühle & Charakter' } },
@@ -32,9 +34,11 @@ export const CATEGORIES: CategoryMeta[] = [
   { id: 'verbs', icon: 'Zap', name: { ru: 'Главные глаголы', en: 'Key verbs', de: 'Wichtige Verben' } },
   { id: 'adjectives', icon: 'Sparkles', name: { ru: 'Главные прилагательные', en: 'Key adjectives', de: 'Wichtige Adjektive' } },
   { id: 'society', icon: 'Landmark', name: { ru: 'Общество и абстрактное (B1–B2)', en: 'Society & abstract (B1–B2)', de: 'Gesellschaft & Abstraktes (B1–B2)' } },
+  { id: 'advanced', icon: 'Brain', name: { ru: 'Продвинутая лексика (B2–C1)', en: 'Advanced vocabulary (B2–C1)', de: 'Fortgeschrittener Wortschatz (B2–C1)' } },
+  { id: 'kanji5', icon: 'Brush', name: { ru: 'Кандзи: первые 100 (N5)', en: 'Kanji: first 100 (N5)', de: 'Kanji: die ersten 100 (N5)' } },
 ];
 
 export const CATEGORY_BY_ID = new Map(CATEGORIES.map((c) => [c.id, c]));
 
-export const LEVELS = ['A1', 'A2', 'B1', 'B2'] as const;
+export const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1'] as const;
 export type Level = (typeof LEVELS)[number];

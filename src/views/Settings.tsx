@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Download, FolderOpen, Play, Upload } from 'lucide-react';
-import type { LangCode, Settings, StudyMode, Theme, UiLang } from '../types';
+import type { LangCode, Settings, StudyMode, UiLang } from '../types';
 import { useData, useStore } from '../store';
 import { useT } from '../i18n';
 import { PRIORITY_LANGS, UI_LANG_NAMES, lang } from '../lib/languages';
@@ -10,6 +10,7 @@ import { isAppData, migrate } from '../lib/defaults';
 import { Confirm } from '../components/Modal';
 import { Flag } from '../components/Flag';
 import { MODES } from '../components/StudySetup';
+import { DesignPicker, ThemePicker } from '../components/Appearance';
 
 const SAMPLE: Partial<Record<LangCode, string>> = {
   en: 'Good morning! How are you today?',
@@ -122,13 +123,13 @@ export function SettingsView() {
         <h3 className="section-title">{t('settings.general')}</h3>
         <div className="setting">
           <span>{t('settings.uiLang')}</span>
-          <select className="input" value={s.uiLang} onChange={(e) => set({ uiLang: e.target.value as UiLang })}>
+          <div className="seg">
             {(Object.keys(UI_LANG_NAMES) as UiLang[]).map((l) => (
-              <option key={l} value={l}>
+              <button key={l} className={s.uiLang === l ? 'on' : ''} onClick={() => set({ uiLang: l })}>
                 {UI_LANG_NAMES[l]}
-              </option>
+              </button>
             ))}
-          </select>
+          </div>
         </div>
         <div className="setting">
           <span>
@@ -144,16 +145,6 @@ export function SettingsView() {
           </select>
         </div>
         <div className="setting">
-          <span>{t('settings.theme')}</span>
-          <div className="seg">
-            {(['system', 'light', 'dark'] as Theme[]).map((th) => (
-              <button key={th} className={s.theme === th ? 'on' : ''} onClick={() => set({ theme: th })}>
-                {t(`theme.${th}`)}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="setting">
           <span>{t('settings.fontScale')}</span>
           <div className="seg">
             {[0.9, 1, 1.1, 1.25].map((f) => (
@@ -163,6 +154,14 @@ export function SettingsView() {
             ))}
           </div>
         </div>
+      </section>
+
+      <section className="panel settings">
+        <h3 className="section-title">{t('settings.appearance')}</h3>
+        <h4 className="sub-title">{t('settings.design')}</h4>
+        <DesignPicker value={s.design} onChange={(design) => set({ design })} t={t} />
+        <h4 className="sub-title">{t('settings.theme')}</h4>
+        <ThemePicker value={s.theme} onChange={(theme) => set({ theme })} t={t} />
       </section>
 
       <section className="panel settings">

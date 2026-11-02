@@ -12,23 +12,32 @@ import { StatsView } from './views/Stats';
 import { SettingsView } from './views/Settings';
 import { Onboarding } from './views/Onboarding';
 import type { View } from './store';
+import { resolveTheme } from './lib/themes';
+import { SidebarQuick } from './components/SidebarQuick';
 
 // The word library holds ~800 entries per language; load it only when opened.
 const LibraryView = lazy(() => import('./views/Library').then((m) => ({ default: m.LibraryView })));
 
 function useTheme() {
   const theme = useStore((s) => s.data.settings.theme);
+  const design = useStore((s) => s.data.settings.design);
+  const ui = useStore((s) => s.data.settings.uiLang);
   const scale = useStore((s) => s.data.settings.fontScale);
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
     const apply = () => {
-      const dark = theme === 'dark' || (theme === 'system' && mq.matches);
-      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+      document.documentElement.dataset.theme = resolveTheme(theme, mq.matches);
     };
     apply();
     mq.addEventListener('change', apply);
     return () => mq.removeEventListener('change', apply);
   }, [theme]);
+  useEffect(() => {
+    document.documentElement.dataset.design = design;
+  }, [design]);
+  useEffect(() => {
+    document.documentElement.lang = ui;
+  }, [ui]);
   useEffect(() => {
     document.documentElement.style.fontSize = `${Math.round(16 * scale)}px`;
   }, [scale]);
@@ -82,6 +91,8 @@ function Sidebar() {
           <span>{t(key)}</span>
         </button>
       ))}
+      <div className="grow" />
+      <SidebarQuick />
     </nav>
   );
 }

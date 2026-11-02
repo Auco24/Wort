@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   Apple, ArrowLeft, Briefcase, Building2, ChevronLeft, ChevronRight, Clock, Coffee, Gamepad2, GraduationCap, Hash,
   HeartPulse, House, Landmark, LayoutGrid, Laptop, List, MessageCircle, Palette, PawPrint, Plane, Plus, Puzzle, Search,
-  Shirt, ShoppingCart, Shuffle, Smile, Sparkles, Star, Trees, Users, Volume2, Zap, type LucideIcon,
+  Shirt, ShoppingCart, Shuffle, Smile, Sparkles, Star, Trees, Users, Volume2, Zap, Sunrise, Handshake, Brain, Brush,
+  type LucideIcon,
 } from 'lucide-react';
 import type { Card, Deck, LangCode } from '../types';
 import { useData, useStore } from '../store';
@@ -20,7 +21,8 @@ import { useSpeak } from '../components/SpeakButton';
 
 const ICONS: Record<string, LucideIcon> = {
   MessageCircle, Puzzle, Users, HeartPulse, Apple, Coffee, House, Shirt, Building2, Plane, Trees, PawPrint, Clock, Hash,
-  Palette, Briefcase, GraduationCap, ShoppingCart, Smile, Gamepad2, Laptop, Zap, Sparkles, Landmark,
+  Palette, Briefcase, GraduationCap, ShoppingCart, Smile, Gamepad2, Laptop, Zap, Sparkles, Landmark, Sunrise, Handshake,
+  Brain, Brush,
 };
 
 /** Library words and the user's own words share this shape in the UI. */

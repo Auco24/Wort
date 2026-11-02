@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { isKanji } from 'wanakana';
+import { checkAnswer } from '../lib/answer';
 import { CATEGORIES, entryDraft, libraryEntries, libraryWords, LIB_LANGS, wordKey } from '../data/library';
 
 describe('word library', () => {
@@ -51,5 +52,14 @@ describe('word library', () => {
     const eat = entries.find((e) => e.f.en.startsWith('eat~'))!;
     expect(entryDraft(eat, 'en', 'ru')).toMatchObject({ term: 'to eat', forms: 'ate, eaten' });
     expect(entryDraft(eat, 'ja', 'ru')).toMatchObject({ term: '食べる', reading: 'たべる' });
+  });
+
+  it('teaches kanji with readings that can be typed in romaji', () => {
+    const one = libraryWords('ja', 'ru').find((w) => w.entry.cat === 'kanji5' && w.draft.term === '一')!;
+    expect(one.draft).toMatchObject({ reading: 'いち', translation: 'один' });
+    expect(one.draft.forms).toContain('ひと(つ)');
+    const card = { ...one.draft, id: 'k', deckId: 'd', createdAt: 0, srs: {} };
+    expect(checkAnswer('ichi', card, 'rev', 'ja', 'ru').verdict).toBe('correct');
+    expect(libraryWords('en', 'ru').some((w) => w.entry.cat === 'kanji5')).toBe(false);
   });
 });
