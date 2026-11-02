@@ -31,6 +31,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -44,9 +46,34 @@ jobs:
           path: |
             release/*.exe
           if-no-files-found: error
-      - name: Publish release (tags only)
-        if: startsWith(github.ref, 'refs/tags/v')
+
+      # A release is published for every new version: either when a v* tag is pushed,
+      # or when main contains a package.json version that has no release yet.
+      - name: Check version
+        id: ver
+        shell: bash
+        run: |
+          v="v$(node -p "require('./package.json').version")"
+          echo "tag=$v" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --tags origin "refs/tags/$v" > /dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v') || (github.ref == 'refs/heads/main' && steps.ver.outputs.exists == 'false')
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || steps.ver.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          name: Wort ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || steps.ver.outputs.tag }}
           files: release/*.exe
           generate_release_notes: true
+          body: |
+            ## Как установить / How to install
+
+            - **Wort-Setup-…exe** — установщик: ярлыки в меню «Пуск» и на рабочем столе. / Installer with Start menu and desktop shortcuts.
+            - **Wort-Portable-…exe** — запускается без установки. / Runs without installing.
+
+            Windows SmartScreen может предупредить о неизвестном издателе (приложение пока не подписано): «Подробнее» → «Выполнить в любом случае».
+            SmartScreen may warn about an unknown publisher (the app is not code-signed yet): "More info" → "Run anyway".

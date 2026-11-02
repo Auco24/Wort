@@ -50,13 +50,11 @@ Interface languages: Russian, English, German — switch any time with the RU / 
 
 ## Installation (Windows)
 
-1. Open the **Actions** tab in the GitHub repository and choose the latest successful **Build** run.
-2. Download the **Wort-Windows** artifact.
-3. Inside it are two files:
-   - `Wort-Setup-x.y.z.exe`, the installer (Start menu and desktop shortcuts);
-   - `Wort-Portable-x.y.z.exe`, a portable version that runs without installation.
+1. Open the **Releases** page of the repository: https://github.com/Auco24/Wort/releases
+2. Download `Wort-Setup-x.y.z.exe` (installer with Start menu and desktop shortcuts) or `Wort-Portable-x.y.z.exe` (runs without installation).
+3. Run it.
 
-When a `v*` tag is pushed (for example `v0.1.0`), the installers are also attached to a GitHub release.
+A release is created automatically when `main` gets a new version number in `package.json` (or when a `v*` tag is pushed). Every build is also available as the **Wort-Windows** artifact on the **Actions** tab.
 
 > The app is not code-signed yet, so Windows SmartScreen may show a warning on first launch. Click "More info" → "Run anyway".
 
