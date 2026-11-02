@@ -39,7 +39,7 @@ describe('translations', () => {
       field: ['term', 'translation', 'reading', 'article', 'forms', 'example', 'notes', 'tags', 'skip'],
       dir: ['fwd', 'rev', 'both', 'fwd.short', 'rev.short'],
       home: ['morning', 'day', 'evening', 'night'],
-      nav: ['home', 'decks', 'add', 'stats', 'settings'],
+      nav: ['home', 'decks', 'library', 'add', 'stats', 'settings'],
     };
     const missing = Object.entries(families).flatMap(([f, ks]) => ks.map((k) => `${f}.${k}`)).filter((k) => !keys.has(k));
     expect(missing).toEqual([]);

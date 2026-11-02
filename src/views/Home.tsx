@@ -97,9 +97,14 @@ export function HomeView() {
         <section className="empty">
           <Sparkles size={32} />
           <p>{t('home.noDecks')}</p>
-          <button className="btn btn-primary" onClick={() => go({ name: 'decks' })}>
-            <Plus size={16} /> {t('decks.create')}
-          </button>
+          <div className="row gap center">
+            <button className="btn btn-primary" onClick={() => go({ name: 'library' })}>
+              {t('decks.fromLibrary')}
+            </button>
+            <button className="btn" onClick={() => go({ name: 'decks' })}>
+              <Plus size={16} /> {t('decks.create')}
+            </button>
+          </div>
         </section>
       ) : (
         <section className="hero">

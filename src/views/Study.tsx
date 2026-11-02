@@ -7,7 +7,7 @@ import { lang } from '../lib/languages';
 import { spokenText, stopSpeaking } from '../lib/tts';
 import { intervalParts, preview } from '../lib/srs';
 import { checkAnswer, suggestedGrade, type CheckResult } from '../lib/answer';
-import { LEARN_AHEAD_MS, buildQueue } from '../lib/queue';
+import { LEARN_AHEAD_MS, buildQueue, tagFilter } from '../lib/queue';
 import { Term } from '../components/Term';
 import { TextInput } from '../components/TextInput';
 import { CharPad } from '../components/CharPad';
@@ -82,7 +82,9 @@ export function StudyView({ config, queue: initialQueue }: { config: StudyConfig
   const [session, setSession] = useState<SessionState>(() =>
     pickNext(
       {
-        queue: initialQueue ?? buildQueue(useStore.getState().data, config.deckIds, new Date()),
+        queue:
+          initialQueue ??
+          buildQueue(useStore.getState().data, config.deckIds, new Date(), tagFilter(config.categories, config.levels)),
         pending: [],
         current: null,
         done: 0,

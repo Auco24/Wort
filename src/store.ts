@@ -13,11 +13,15 @@ export interface StudyConfig {
   cram: boolean;
   cramDir: Direction | 'both';
   cramLimit: number;
+  /** Only words from these categories / levels (card tags); empty = everything. */
+  categories?: string[];
+  levels?: string[];
 }
 
 export type View =
   | { name: 'home' }
   | { name: 'decks' }
+  | { name: 'library' }
   | { name: 'deck'; deckId: string }
   | { name: 'add'; deckId?: string }
   | { name: 'import'; deckId?: string }

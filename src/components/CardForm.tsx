@@ -7,6 +7,7 @@ import { useData } from '../store';
 import { TextInput } from './TextInput';
 import { CharPad } from './CharPad';
 import { normalize } from '../lib/answer';
+import { CATEGORIES, CATEGORY_BY_ID } from '../data/library/categories';
 
 const POS: PartOfSpeech[] = ['noun', 'verb', 'adj', 'adv', 'phrase', 'other'];
 
@@ -57,6 +58,7 @@ export function CardForm({
   onSubmit,
   onCancel,
   autoFocus = true,
+  defaultCategory,
 }: {
   deck: Deck;
   initial?: CardDraft;
@@ -65,11 +67,16 @@ export function CardForm({
   onSubmit(draft: CardDraft): void;
   onCancel?(): void;
   autoFocus?: boolean;
+  /** Category tag preselected for new words. */
+  defaultCategory?: string;
 }) {
   const t = useT();
   const data = useData();
   const meta = lang(deck.language);
-  const [d, setD] = useState<CardDraft>(initial ?? emptyDraft());
+  const [d, setD] = useState<CardDraft>(initial ?? { ...emptyDraft(), tags: defaultCategory ? [defaultCategory] : [] });
+  const category = d.tags.find((tag) => CATEGORY_BY_ID.has(tag)) ?? '';
+  const setCategory = (id: string) =>
+    setD((cur) => ({ ...cur, tags: [...cur.tags.filter((tag) => !CATEGORY_BY_ID.has(tag)), ...(id ? [id] : [])] }));
   const [more, setMore] = useState(!!(initial && (initial.example || initial.notes || initial.forms)));
   const termRef = useRef<HTMLInputElement>(null);
   const exampleRef = useRef<HTMLInputElement>(null);
@@ -92,7 +99,8 @@ export function CardForm({
     if (!valid) return;
     onSubmit({ ...d, tags: d.tags.filter(Boolean) });
     if (!editingId) {
-      setD({ ...emptyDraft(), pos: d.pos });
+      // Keep part of speech and category: words are usually added in batches of one kind.
+      setD({ ...emptyDraft(), pos: d.pos, tags: category ? [category] : [] });
       termRef.current?.focus();
     }
   };
@@ -154,6 +162,17 @@ export function CardForm({
           <TextInput value={d.translation} onValue={(v) => set({ translation: v })} className="input input-lg" placeholder={t('form.translationPh')} />
         </label>
         <label className="field">
+          <span>{t('form.category')}</span>
+          <select className="input" value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="">—</option>
+            {CATEGORIES.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name[data.settings.uiLang]}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="field">
           <span>{t('form.pos')}</span>
           <select className="input" value={d.pos ?? ''} onChange={(e) => set({ pos: (e.target.value || undefined) as PartOfSpeech | undefined })}>
             <option value="">—</option>
@@ -197,7 +216,12 @@ export function CardForm({
           </label>
           <label className="field field-wide">
             <span>{t('form.tags')}</span>
-            <TextInput value={d.tags.join(' ')} onValue={(v) => set({ tags: v.split(/\s+/) })} className="input" placeholder={t('form.tagsPh')} />
+            <TextInput
+              value={d.tags.filter((tag) => !CATEGORY_BY_ID.has(tag)).join(' ')}
+              onValue={(v) => set({ tags: [...v.split(/\s+/), ...(category ? [category] : [])] })}
+              className="input"
+              placeholder={t('form.tagsPh')}
+            />
           </label>
         </div>
       )}

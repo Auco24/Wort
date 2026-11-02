@@ -9,6 +9,7 @@ export const STRINGS = {
   'nav.home': { ru: 'Сегодня', en: 'Today', de: 'Heute' },
   'nav.decks': { ru: 'Колоды', en: 'Decks', de: 'Stapel' },
   'nav.add': { ru: 'Добавить слова', en: 'Add words', de: 'Wörter hinzufügen' },
+  'nav.library': { ru: 'Библиотека', en: 'Library', de: 'Bibliothek' },
   'nav.stats': { ru: 'Статистика', en: 'Statistics', de: 'Statistik' },
   'nav.settings': { ru: 'Настройки', en: 'Settings', de: 'Einstellungen' },
 
@@ -87,6 +88,7 @@ export const STRINGS = {
   },
   'decks.newPerDay': { ru: 'Новых слов в день (пусто — как в настройках)', en: 'New words per day (empty = global setting)', de: 'Neue Wörter pro Tag (leer = globale Einstellung)' },
   'decks.learned': { ru: 'выучено: {n}', en: 'learned: {n}', de: 'gelernt: {n}' },
+  'decks.fromLibrary': { ru: 'Слова из библиотеки', en: 'Words from the library', de: 'Wörter aus der Bibliothek' },
   'decks.starters': { ru: 'Готовые стартовые колоды', en: 'Ready-made starter decks', de: 'Fertige Startstapel' },
   'decks.starterAdded': { ru: ru('Добавлено {n} слово', 'Добавлено {n} слова', 'Добавлено {n} слов'), en: pl('{n} word added', '{n} words added'), de: pl('{n} Wort hinzugefügt', '{n} Wörter hinzugefügt') },
 
@@ -131,6 +133,7 @@ export const STRINGS = {
   'form.readingKana': { ru: 'Чтение (кана) — можно печатать ромадзи', en: 'Reading (kana) — you can type romaji', de: 'Lesung (Kana) — Romaji-Eingabe möglich' },
   'form.reading': { ru: 'Произношение / транскрипция', en: 'Pronunciation', de: 'Aussprache' },
   'form.readingPh': { ru: 'например [əˈtʃiːv]', en: 'e.g. [əˈtʃiːv]', de: 'z. B. [əˈtʃiːv]' },
+  'form.category': { ru: 'Категория', en: 'Category', de: 'Kategorie' },
   'form.pos': { ru: 'Часть речи', en: 'Part of speech', de: 'Wortart' },
   'form.more': { ru: 'Формы, пример, заметки', en: 'Forms, example, notes', de: 'Formen, Beispiel, Notizen' },
   'form.forms': { ru: 'Формы', en: 'Forms', de: 'Formen' },
@@ -188,9 +191,49 @@ export const STRINGS = {
   'field.tags': { ru: 'Теги', en: 'Tags', de: 'Tags' },
   'field.skip': { ru: '— пропустить —', en: '— skip —', de: '— überspringen —' },
 
+  // Library
+  'library.subtitle': {
+    ru: '{n} слов в {c} темах — сохраняйте нужные звёздочкой, и они попадут в вашу колоду',
+    en: '{n} words in {c} topics — star the ones you want and they go into your deck',
+    de: '{n} Wörter in {c} Themen — markiere sie mit dem Stern, dann landen sie in deinem Stapel',
+  },
+  'library.search': { ru: 'Найти слово или перевод', en: 'Find a word or meaning', de: 'Wort oder Bedeutung suchen' },
+  'library.allLevels': { ru: 'Все уровни', en: 'All levels', de: 'Alle Niveaus' },
+  'library.saveTo': { ru: 'Сохранять в:', en: 'Save to:', de: 'Speichern in:' },
+  'library.myWords': { ru: '{lang}: мои слова', en: '{lang}: my words', de: '{lang}: meine Wörter' },
+  'library.willCreate': { ru: 'будет создана', en: 'will be created', de: 'wird angelegt' },
+  'library.save': { ru: 'Сохранить слово (S)', en: 'Save word (S)', de: 'Wort speichern (S)' },
+  'library.unsave': { ru: 'Убрать из колоды (S)', en: 'Remove from deck (S)', de: 'Aus dem Stapel entfernen (S)' },
+  'library.savedOne': { ru: '«{term}» сохранено', en: '“{term}” saved', de: '„{term}“ gespeichert' },
+  'library.removed': { ru: '«{term}» убрано из колоды', en: '“{term}” removed', de: '„{term}“ entfernt' },
+  'library.inStudy': {
+    ru: 'Это слово уже изучается — удалить его можно в колоде',
+    en: 'You are already studying this word — delete it from the deck instead',
+    de: 'Dieses Wort lernst du schon — lösche es bei Bedarf im Stapel',
+  },
+  'library.addedAll': { ru: ru('Сохранено {n} слово', 'Сохранено {n} слова', 'Сохранено {n} слов'), en: pl('{n} word saved', '{n} words saved'), de: pl('{n} Wort gespeichert', '{n} Wörter gespeichert') },
+  'library.saveAll': { ru: 'Сохранить все ({n})', en: 'Save all ({n})', de: 'Alle speichern ({n})' },
+  'library.addOwn': { ru: 'Добавить своё слово', en: 'Add your own word', de: 'Eigenes Wort hinzufügen' },
+  'library.openDeck': { ru: 'Открыть колоду', en: 'Open deck', de: 'Stapel öffnen' },
+  'library.savedOf': { ru: 'сохранено {n} из {total}', en: '{n} of {total} saved', de: '{n} von {total} gespeichert' },
+  'library.list': { ru: 'Списком', en: 'List', de: 'Liste' },
+  'library.cards': { ru: 'Карточками', en: 'Cards', de: 'Karten' },
+  'library.own': { ru: 'ваше', en: 'yours', de: 'eigenes' },
+  'library.empty': { ru: 'На этом уровне здесь нет слов.', en: 'No words at this level.', de: 'Auf diesem Niveau gibt es hier keine Wörter.' },
+  'library.noResults': { ru: 'Ничего не найдено', en: 'Nothing found', de: 'Nichts gefunden' },
+  'library.shuffle': { ru: 'Перемешать', en: 'Shuffle', de: 'Mischen' },
+  'library.meaningFirst': { ru: 'Сначала перевод', en: 'Meaning first', de: 'Bedeutung zuerst' },
+  'library.flipHint': {
+    ru: 'клик или Пробел — перевернуть · ← → — листать · S — сохранить · R — звук',
+    en: 'click or Space — flip · ← → — browse · S — save · R — audio',
+    de: 'Klick oder Leertaste — umdrehen · ← → — blättern · S — speichern · R — Ton',
+  },
+
   // Study setup
   'setup.title': { ru: 'Занятие', en: 'Study session', de: 'Lerneinheit' },
   'setup.decks': { ru: 'Колоды', en: 'Decks', de: 'Stapel' },
+  'setup.topics': { ru: 'Темы и уровни', en: 'Topics & levels', de: 'Themen & Niveaus' },
+  'setup.topicsHint': { ru: '— ничего не выбрано = все слова', en: '— none selected = all words', de: '— nichts gewählt = alle Wörter' },
   'setup.mode': { ru: 'Режим', en: 'Mode', de: 'Modus' },
   'setup.cram': { ru: 'Тренировка', en: 'Practice', de: 'Übung' },
   'setup.cram.desc': {

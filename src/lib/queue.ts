@@ -95,7 +95,7 @@ function shuffle<T>(arr: T[]): T[] {
  * due learning cards first, then reviews (most overdue first) with new cards spread evenly between them.
  * Two directions of the same word are never put in the same session.
  */
-export function buildQueue(data: AppData, deckIds: string[], now: Date): QueueItem[] {
+export function buildQueue(data: AppData, deckIds: string[], now: Date, filter?: (c: Card) => boolean): QueueItem[] {
   const today = todayCounts(data, now);
   const decks = data.decks.filter((d) => deckIds.includes(d.id));
   const learning: { item: QueueItem; due: number }[] = [];
@@ -107,7 +107,7 @@ export function buildQueue(data: AppData, deckIds: string[], now: Date): QueueIt
     const dirs = directions(deck);
     const limit = deck.newPerDay ?? data.settings.newPerDay;
     let newLeft = Math.max(0, limit - (today.newByDeck.get(deck.id) ?? 0));
-    const cards = data.cards.filter((c) => c.deckId === deck.id && !c.suspended);
+    const cards = data.cards.filter((c) => c.deckId === deck.id && !c.suspended && (!filter || filter(c)));
 
     for (const c of cards) {
       for (const d of dirs) {
@@ -150,13 +150,27 @@ export function buildQueue(data: AppData, deckIds: string[], now: Date): QueueIt
 }
 
 /** Practice queue that ignores scheduling ("cram"): every card of the decks, shuffled. */
-export function buildCramQueue(data: AppData, deckIds: string[], dir: Direction | 'both', limit = 0): QueueItem[] {
+export function buildCramQueue(
+  data: AppData,
+  deckIds: string[],
+  dir: Direction | 'both',
+  limit = 0,
+  filter?: (c: Card) => boolean,
+): QueueItem[] {
   const items: QueueItem[] = [];
   for (const c of data.cards) {
-    if (!deckIds.includes(c.deckId) || c.suspended) continue;
+    if (!deckIds.includes(c.deckId) || c.suspended || (filter && !filter(c))) continue;
     const d: Direction = dir === 'both' ? (Math.random() < 0.5 ? 'fwd' : 'rev') : dir;
     items.push({ cardId: c.id, dir: d });
   }
   const shuffled = shuffle(items);
   return limit > 0 ? shuffled.slice(0, limit) : shuffled;
+}
+
+/** Cards matching any of the chosen categories and any of the chosen levels (empty list = no restriction). */
+export function tagFilter(categories?: string[], levels?: string[]): ((c: Card) => boolean) | undefined {
+  const cats = categories?.length ? new Set(categories) : null;
+  const lvls = levels?.length ? new Set(levels) : null;
+  if (!cats && !lvls) return undefined;
+  return (c) => (!cats || c.tags.some((t) => cats.has(t))) && (!lvls || c.tags.some((t) => lvls.has(t)));
 }

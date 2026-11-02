@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { BarChart3, BookOpen, Home, Layers, Plus, Settings as SettingsIcon } from 'lucide-react';
+import { Suspense, lazy, useEffect, useState } from 'react';
+import { BarChart3, BookOpen, Home, Layers, Library, Plus, Settings as SettingsIcon } from 'lucide-react';
 import { useStore } from './store';
 import { useT } from './i18n';
 import { HomeView } from './views/Home';
@@ -12,6 +12,9 @@ import { StatsView } from './views/Stats';
 import { SettingsView } from './views/Settings';
 import { Onboarding } from './views/Onboarding';
 import type { View } from './store';
+
+// The word library holds ~800 entries per language; load it only when opened.
+const LibraryView = lazy(() => import('./views/Library').then((m) => ({ default: m.LibraryView })));
 
 function useTheme() {
   const theme = useStore((s) => s.data.settings.theme);
@@ -51,6 +54,7 @@ function Toast() {
 const NAV: { view: View['name']; icon: typeof Home; key: string }[] = [
   { view: 'home', icon: Home, key: 'nav.home' },
   { view: 'decks', icon: Layers, key: 'nav.decks' },
+  { view: 'library', icon: Library, key: 'nav.library' },
   { view: 'add', icon: Plus, key: 'nav.add' },
   { view: 'stats', icon: BarChart3, key: 'nav.stats' },
   { view: 'settings', icon: SettingsIcon, key: 'nav.settings' },
@@ -126,6 +130,11 @@ export function App() {
       <main className="main">
         {view.name === 'home' && <HomeView />}
         {view.name === 'decks' && <DecksView />}
+        {view.name === 'library' && (
+          <Suspense fallback={<div className="page muted">…</div>}>
+            <LibraryView />
+          </Suspense>
+        )}
         {view.name === 'deck' && <DeckView deckId={view.deckId} />}
         {view.name === 'add' && <AddWordsView deckId={view.deckId} />}
         {view.name === 'import' && <ImportView deckId={view.deckId} />}

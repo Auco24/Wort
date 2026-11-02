@@ -38,6 +38,12 @@ Interface languages: Russian, English, German.
   - duplicate warnings
   - bulk import from a pasted list or a CSV file, with column mapping
 - **Statistics:** daily goal, study streak, activity calendar, 2-week review forecast, success rate.
+- **Word library: about 830 words in 24 topics** (phrases, family, food, travel, work, nature, verbs, adjectives, society and more), levels A1–B2. Each entry exists in English, German (article and plural or verb forms), Swedish (en/ett and forms) and Japanese (with kana reading), translated into Russian, English or German. In the library you can:
+  - filter by language, level and topic, or search;
+  - browse a topic as a list or as flip cards (click/Space flips, ← → browse);
+  - save a word with the star (S) — it goes into your deck and gets scheduled; "Save all" takes a whole topic;
+  - add your own words to any topic.
+- **Topics when studying:** a session can be limited to chosen topics and levels.
 - **Starter decks** of 40–55 words each for English, German, Swedish and Japanese, with translations, grammar forms and examples.
 - **Data safety.** Everything is stored locally in `%APPDATA%\Wort\wort-data.json`. Wort makes a backup every day and keeps the last 14. You can also export a backup or a CSV file yourself.
 - Light and dark themes, adjustable text size.
@@ -102,6 +108,7 @@ src/
   lib/tts.ts       speech synthesis
   lib/importExport.ts  CSV/TSV parsing and export
   data/starter.ts  starter decks
+  data/library/    word library: categories + one line per word in all languages
   views/           screens: Today, Decks, Study, Statistics, Settings…
   strings.ts       interface strings (ru/en/de)
 ```

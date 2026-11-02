@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Plus } from 'lucide-react';
+import { Library, Plus } from 'lucide-react';
 import type { Deck, LangCode } from '../types';
 import { useData, useStore } from '../store';
 import { useT } from '../i18n';
@@ -110,9 +110,14 @@ export function DecksView() {
     <div className="page">
       <header className="page-head">
         <h1>{t('nav.decks')}</h1>
-        <button className="btn btn-primary" onClick={() => setCreating(true)}>
-          <Plus size={16} /> {t('decks.create')}
-        </button>
+        <div className="row gap">
+          <button className="btn" onClick={() => go({ name: 'library' })}>
+            <Library size={16} /> {t('decks.fromLibrary')}
+          </button>
+          <button className="btn btn-primary" onClick={() => setCreating(true)}>
+            <Plus size={16} /> {t('decks.create')}
+          </button>
+        </div>
       </header>
 
       {data.decks.length === 0 && <p className="muted">{t('decks.empty')}</p>}

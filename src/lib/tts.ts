@@ -58,6 +58,7 @@ export function stopSpeaking(): void {
 
 /** What should be pronounced for a card: article + word, or the kana reading for Japanese. */
 export function spokenText(card: Card, code: LangCode): string {
-  if (lang(code).kana) return card.reading?.trim() || card.term;
-  return card.article ? `${card.article} ${card.term}` : card.term;
+  const raw = lang(code).kana ? card.reading?.trim() || card.term : card.article ? `${card.article} ${card.term}` : card.term;
+  // "cold (illness)", "mormor/farmor", "ich heiße …" → speak only the word itself.
+  return raw.replace(/\([^)]*\)/g, ' ').replace(/[\/]/g, ', ').replace(/…/g, ' ').replace(/\s+/g, ' ').trim();
 }

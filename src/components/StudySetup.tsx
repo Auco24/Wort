@@ -5,7 +5,8 @@ import { useData, useStore, type StudyConfig } from '../store';
 import { useT } from '../i18n';
 import { Modal } from './Modal';
 import { Flag } from './Flag';
-import { buildCramQueue, buildQueue } from '../lib/queue';
+import { buildCramQueue, buildQueue, tagFilter } from '../lib/queue';
+import { CATEGORIES, LEVELS } from '../data/library/categories';
 
 export const MODES: { mode: StudyMode; icon: typeof Ear }[] = [
   { mode: 'flip', icon: RotateCcw },
@@ -18,9 +19,10 @@ export const MODES: { mode: StudyMode; icon: typeof Ear }[] = [
 /** Starts a session; shows a message instead when there is nothing to study. */
 export function startStudy(config: StudyConfig, nothingText: string): boolean {
   const { data, go, notify } = useStore.getState();
+  const filter = tagFilter(config.categories, config.levels);
   const queue = config.cram
-    ? buildCramQueue(data, config.deckIds, config.cramDir, config.cramLimit)
-    : buildQueue(data, config.deckIds, new Date());
+    ? buildCramQueue(data, config.deckIds, config.cramDir, config.cramLimit, filter)
+    : buildQueue(data, config.deckIds, new Date(), filter);
   if (!queue.length) {
     notify(nothingText);
     return false;
@@ -38,11 +40,36 @@ export function StudySetup({ deckIds: initialIds, cram: initialCram = false, onC
   const [cram, setCram] = useState(initialCram);
   const [dir, setDir] = useState<Direction | 'both'>(last?.cramDir ?? 'fwd');
   const [limit, setLimit] = useState(last?.cramLimit ?? 20);
+  const [cats, setCats] = useState<Set<string>>(new Set());
+  const [levels, setLevels] = useState<Set<string>>(new Set());
+
+  // Categories and levels that actually occur in the chosen decks.
+  const present = useMemo(() => {
+    const tags = new Set<string>();
+    for (const c of data.cards) if (ids.has(c.deckId)) c.tags.forEach((t) => tags.add(t));
+    return {
+      cats: CATEGORIES.filter((c) => tags.has(c.id)),
+      levels: LEVELS.filter((l) => tags.has(l)),
+    };
+  }, [data.cards, ids]);
+
+  const catList = [...cats].filter((c) => present.cats.some((p) => p.id === c));
+  const levelList = [...levels].filter((l) => (present.levels as string[]).includes(l));
 
   const count = useMemo(() => {
     const list = [...ids];
-    return cram ? buildCramQueue(data, list, dir, limit).length : buildQueue(data, list, new Date()).length;
-  }, [data, ids, cram, dir, limit]);
+    const filter = tagFilter(catList, levelList);
+    return cram ? buildCramQueue(data, list, dir, limit, filter).length : buildQueue(data, list, new Date(), filter).length;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, ids, cram, dir, limit, catList.join(), levelList.join()]);
+
+  const toggleIn = (setter: typeof setCats, value: string) =>
+    setter((cur) => {
+      const n = new Set(cur);
+      if (n.has(value)) n.delete(value);
+      else n.add(value);
+      return n;
+    });
 
   const toggle = (id: string) =>
     setIds((cur) => {
@@ -53,7 +80,13 @@ export function StudySetup({ deckIds: initialIds, cram: initialCram = false, onC
     });
 
   const start = () => {
-    if (startStudy({ deckIds: [...ids], mode, cram, cramDir: dir, cramLimit: limit }, t('study.nothing'))) onClose();
+    if (
+      startStudy(
+        { deckIds: [...ids], mode, cram, cramDir: dir, cramLimit: limit, categories: catList, levels: levelList },
+        t('study.nothing'),
+      )
+    )
+      onClose();
   };
 
   return (
@@ -68,6 +101,27 @@ export function StudySetup({ deckIds: initialIds, cram: initialCram = false, onC
           </label>
         ))}
       </div>
+
+      {(present.cats.length > 0 || present.levels.length > 0) && (
+        <>
+          <h4>
+            {t('setup.topics')} <small className="muted">{t('setup.topicsHint')}</small>
+          </h4>
+          <div className="chip-row">
+            {present.levels.map((l) => (
+              <button key={l} className={'lang-chip' + (levels.has(l) ? ' on' : '')} onClick={() => toggleIn(setLevels, l)}>
+                {l}
+              </button>
+            ))}
+            {present.levels.length > 0 && <span className="chip-sep" />}
+            {present.cats.map((c) => (
+              <button key={c.id} className={'lang-chip' + (cats.has(c.id) ? ' on' : '')} onClick={() => toggleIn(setCats, c.id)}>
+                {c.name[data.settings.uiLang]}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
 
       <h4>{t('setup.mode')}</h4>
       <div className="mode-grid">
